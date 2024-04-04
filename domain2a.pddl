@@ -1,0 +1,77 @@
+(define (domain question2a)
+  (:requirements :typing :action-costs :equality :negative-preconditions :conditional-effects)
+  (:types
+    unit obj
+  )
+  (:constants
+    fridge - unit
+    sink - unit
+    cupboard - unit
+    oven - unit
+    bin - unit
+  )
+  (:predicates
+    (Supplies ?s - obj)
+    (Expired ?s - obj)
+    (Tray ?t - obj)
+    (UnitClean ?u - unit)
+    (IsEmpty ?u - unit)
+    (In ?o - obj ?u - unit)
+    (Dirty ?o - obj)
+  )
+  (:action cleanFridge
+      :parameters ()
+      :precondition (and (not (UnitClean fridge)))
+      :effect (and (UnitClean fridge)
+                   (forall (?s - obj)
+                           (when (and (Supplies ?s)
+                                      (Expired ?s)
+                                      (In ?s fridge))
+                                  (and (not (In ?s fridge))
+                                       (In ?s bin)
+                                       (not (IsEmpty bin))))))
+  )
+  (:action cleanOven
+      :parameters ()
+      :precondition (and (not (UnitClean oven))
+                         (IsEmpty sink))
+      :effect (and (UnitClean oven)
+                   (forall (?t - obj)
+                           (when (and (Tray ?t)
+                                      (Dirty ?t)
+                                      (In ?t oven))
+                                 (and (not (In ?t oven))
+                                      (In ?t sink)
+                                      (not (IsEmpty sink))
+                                      (not (UnitClean sink))))))
+  )
+  (:action cleanSink
+      :parameters ()
+      :precondition (and (not (UnitClean sink))
+                         (IsEmpty sink))
+      :effect (and (UnitClean sink))
+  )
+  (:action washTrays
+      :parameters ()
+      :precondition (exists (?t - obj) (and (Tray ?t)
+                                                 (In ?t sink)))
+      :effect (and (when (not (exists (?p - obj)
+                                      (and (Supplies ?p)
+                                           (In ?p sink))))
+                         (IsEmpty sink))
+                   (forall (?t - obj) 
+                            (when (and (Tray ?t)
+                                       (In ?t sink))
+                                  (and (not (In ?t sink))
+                                       (In ?t cupboard)
+                                       (not (Dirty ?t))))))
+  )
+  (:action emptyBin
+      :parameters ()
+      :precondition (not (IsEmpty bin))
+      :effect (and (IsEmpty bin)
+                   (forall (?s - obj)
+                           (when (In ?s bin)
+                                 (not (In ?s bin)))))
+  )
+)
