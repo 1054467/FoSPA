@@ -29,3 +29,10 @@
          (UnitClean oven))
   )
 )
+
+; planning.domains returned the following plan for the goal:
+; (cleanfridge )
+; (emptybin )
+; (cleanoven )
+; (washtrays )
+; (cleansink )
