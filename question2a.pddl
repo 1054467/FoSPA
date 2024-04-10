@@ -1,0 +1,38 @@
+(define (problem question2a)
+  (:domain question2a)
+  (:objects
+    Item1 Item2 Item3 Tray1 Tray2 - obj
+  )
+  (:init
+    (Supplies Item1)
+    (Supplies Item2)
+    (Supplies Item3)
+    (Expired Item1)
+    (Expired Item2)
+    (In Item1 fridge)
+    (In Item2 fridge)
+    (In Item3 fridge)
+    (Tray Tray1)
+    (Tray Tray2)
+    (Dirty Tray1)
+    (Dirty Tray2)
+    (In Tray1 oven)
+    (In Tray2 oven)
+    (UnitClean sink)
+    (IsEmpty sink)
+    (IsEmpty bin)
+  )
+  (:goal
+    (and (IsEmpty bin)
+         (UnitClean sink)
+         (UnitClean fridge)
+         (UnitClean oven))
+  )
+)
+
+; planning.domains returned the following plan for the goal:
+; (cleanfridge )
+; (emptybin )
+; (cleanoven )
+; (washtrays )
+; (cleansink )
