@@ -1,0 +1,2 @@
+.inputs: a b key
+.outputs: gotoa gotob getkey dummy
